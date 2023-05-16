@@ -2,6 +2,7 @@ package com.example.tdd;
 
 import com.example.tdd.money.domain.Dollar;
 import com.example.tdd.money.domain.Franc;
+import com.example.tdd.money.domain.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -11,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class TddApplicationTests {
 
 	@Test
-	public void testMultipleication() {
-		Dollar five = new Dollar(5);
+	public void testMultiplication() {
+		Money five = Money.dollar(5);
 		// Dollar와 Dollar을 비교함으로써 amount를 캡슐화
-		assertEquals(new Dollar(5), five.times(2));
-		assertEquals(new Dollar(15), five.times(3));
+		assertEquals(Money.dollar(5), five.times(2));
+		assertEquals(Money.dollar(15), five.times(3));
 	}
 
 	/**
@@ -23,12 +24,14 @@ class TddApplicationTests {
 	 */
 	@Test
 	public void testEquality() {
-		assertTrue(new Dollar(5).equals(new Dollar(5)));
-		assertFalse(new Dollar(5).equals(new Dollar(5)));
+		assertTrue(Money.dollar(5).equals(Money.dollar(5)));
+		assertFalse(Money.dollar(5).equals(Money.dollar(5)));
 
 		// 동치성 테스트에서 Franc 추가
-		assertTrue(new Franc(5).equals(new Franc(5)));
-		assertFalse(new Franc(5).equals(new Franc(5)));
+		assertTrue(Money.franc(5).equals(Money.franc(5)));
+		assertFalse(Money.franc(5).equals(Money.franc(5)));
+
+		assertFalse(Money.franc(5).equals(Money.dollar(5)));
 	}
 
 	/**
@@ -36,8 +39,14 @@ class TddApplicationTests {
 	 */
 	@Test
 	public void testFrancMultiplication() {
-		Franc five = new Franc(5);
-		assertEquals(new Franc(10), five.times(2));
-		assertEquals(new Franc(15), five.times(3));
+		Money five = Money.franc(5);
+		assertEquals(Money.franc(10), five.times(2));
+		assertEquals(Money.franc(15), five.times(3));
+	}
+
+	@Test
+	public void testCurrency() {
+		assertEquals("USD", Money.dollar(1).currency());
+		assertEquals("CHF", Money.franc(1).currency());
 	}
 }

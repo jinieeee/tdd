@@ -3,11 +3,19 @@ package com.example.tdd.money.domain;
 import lombok.NoArgsConstructor;
 
 public class Dollar extends Money {
-    public Dollar(int amount) {
-        this.amount = amount;
+
+    private String currency;
+
+    public Dollar(int amount, String currency) {
+        super(amount, currency);
     }
 
-    public Dollar times(int multiplier) {
-        return new Dollar(amount * multiplier);
+    public Money times(int multiplier) {
+        return Money.dollar(amount * multiplier);
+    }
+
+    @Override
+    public String currency() {
+        return "USD";
     }
 }
