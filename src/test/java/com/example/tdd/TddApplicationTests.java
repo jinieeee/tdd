@@ -1,7 +1,7 @@
 package com.example.tdd;
 
-import com.example.tdd.money.domain.Dollar;
-import com.example.tdd.money.domain.Franc;
+import com.example.tdd.money.domain.Bank;
+import com.example.tdd.money.domain.Expression;
 import com.example.tdd.money.domain.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,8 +28,8 @@ class TddApplicationTests {
 		assertFalse(Money.dollar(5).equals(Money.dollar(5)));
 
 		// 동치성 테스트에서 Franc 추가
-		assertTrue(Money.franc(5).equals(Money.franc(5)));
-		assertFalse(Money.franc(5).equals(Money.franc(5)));
+		// assertTrue(Money.franc(5).equals(Money.franc(5)));
+		// assertFalse(Money.franc(5).equals(Money.franc(5)));
 
 		assertFalse(Money.franc(5).equals(Money.dollar(5)));
 	}
@@ -50,11 +50,24 @@ class TddApplicationTests {
 		assertEquals("CHF", Money.franc(1).currency());
 	}
 
+	/* Dollar / Franc 중복 제거로 인해 불필요해진 소스
 	@Test
 	public void testDifferentClassEquality() {
-		/* equals는 amount와 currency가 동일한지 비교하는 메소드이다.
-		*  Franc의 생성자는 Money를 상속받아 Money 객체를 리턴받도록 구현되어 있기 때문에 비교하면 결과는 True이다.
-		* */
+		// equals는 amount와 currency가 동일한지 비교하는 메소드이다.
+		// Franc의 생성자는 Money를 상속받아 Money 객체를 리턴받도록 구현되어 있기 때문에 비교하면 결과는 True이다.
 		assertTrue(new Money(10, "CHF").equals(new Franc(10, "CHF")));
+	}
+	*/
+
+
+	@Test
+	public void testSimpleAddition() {
+		Money five = Money.dollar(5);
+		Expression sum = five.plus(five);
+		assertEquals(Money.dollar(10), sum);
+
+		Bank bank = new Bank();
+		Money reduced = bank.reduce(sum, "USD");
+		assertEquals(Money.dollar(10), reduced);
 	}
 }

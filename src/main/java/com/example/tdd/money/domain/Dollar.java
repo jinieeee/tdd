@@ -2,6 +2,7 @@ package com.example.tdd.money.domain;
 
 import lombok.NoArgsConstructor;
 
+// unused
 public class Dollar extends Money {
 
     private String currency;
