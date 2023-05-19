@@ -49,4 +49,12 @@ class TddApplicationTests {
 		assertEquals("USD", Money.dollar(1).currency());
 		assertEquals("CHF", Money.franc(1).currency());
 	}
+
+	@Test
+	public void testDifferentClassEquality() {
+		/* equals는 amount와 currency가 동일한지 비교하는 메소드이다.
+		*  Franc의 생성자는 Money를 상속받아 Money 객체를 리턴받도록 구현되어 있기 때문에 비교하면 결과는 True이다.
+		* */
+		assertTrue(new Money(10, "CHF").equals(new Franc(10, "CHF")));
+	}
 }

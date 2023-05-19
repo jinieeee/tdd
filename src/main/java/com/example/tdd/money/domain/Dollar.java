@@ -10,9 +10,10 @@ public class Dollar extends Money {
         super(amount, currency);
     }
 
-    public Money times(int multiplier) {
-        return Money.dollar(amount * multiplier);
-    }
+//    Franc과 Dollar의 times가 동일해졌다. 상위 클래스로 올릴 수 있다.
+//    public Money times(int multiplier) {
+//        return new Money(amount * multiplier , currency);
+//    }
 
     @Override
     public String currency() {

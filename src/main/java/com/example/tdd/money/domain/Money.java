@@ -1,6 +1,8 @@
 package com.example.tdd.money.domain;
 
-public abstract class Money {
+import java.util.Objects;
+
+public class Money {
     // 상속받은 클래스에서 변수를 사용할 수 있도록 접근성을 protected로
     protected int amount;
 
@@ -8,7 +10,8 @@ public abstract class Money {
 
     public boolean equals(Object object) {
         Money money = (Money) object;
-        return amount == money.amount;
+        return amount == money.amount
+                && currency().equals(money.currency());
     }
 
     public Money(int amount, String currency) {
@@ -24,9 +27,16 @@ public abstract class Money {
         return new Franc(amount, "CHF");
     }
 
-    public abstract Money times(int multiplier);
+    public Money times(int multiplier) {
+        return new Money(amount * multiplier , currency);
+    }
 
     public String currency() {
         return currency;
     }
+
+    public String toString() {
+        return amount + " " + currency;
+    }
+
 }
