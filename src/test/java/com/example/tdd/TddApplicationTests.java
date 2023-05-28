@@ -26,7 +26,7 @@ class TddApplicationTests {
 	@Test
 	public void testEquality() {
 		assertTrue(Money.dollar(5).equals(Money.dollar(5)));
-		assertFalse(Money.dollar(5).equals(Money.dollar(5)));
+		assertFalse(Money.dollar(10).equals(Money.dollar(5)));
 
 		// 동치성 테스트에서 Franc 추가
 		// assertTrue(Money.franc(5).equals(Money.franc(5)));
@@ -74,7 +74,7 @@ class TddApplicationTests {
 
 	@Test
 	public void testPlusReturnsSum() {
-		Money five = Money.dollar(5);
+		Expression five = Money.dollar(5);
 		Expression result = five.plus(five);
 		Sum sum = (Sum) result;
 		assertEquals(five, sum.augend);
@@ -95,5 +95,70 @@ class TddApplicationTests {
 		Bank bank = new Bank();
 		Money result = bank.reduce(Money.dollar(1), "USD");
 		assertEquals(Money.dollar(1), result);
+	}
+
+	@Test
+	public void testReduceMoneyDefferentCurrency() {
+		Bank bank = new Bank();
+		// 환율이 2:1인 경우
+		bank.addRate("CHF", "USD", 2);
+		Money result = bank.reduce(Money.franc(2), "USD");
+		assertEquals(Money.dollar(1), result);
+	}
+
+	@Test
+	public void testArrayEquals() {
+//		환율을 매핑시키는 해시 테이블을 사용할 수 있는가?
+//		각각 원소에 대한 동치성 검사를 수행할 수 있는가? -> 실패
+		assertEquals(new Object[]{"abc"}, new Object[]{"abc"});
+	}
+
+	@Test
+	public void testIdentityRate() {
+		assertEquals(1, new Bank().rate("USD", "USD"));
+	}
+
+	/**
+	 * 서로 다른 통화 더하기
+	 */
+	@Test
+	public void testMixedAddition() {
+		Expression fiveBucks = Money.dollar(5);
+		Expression tenFrancs = Money.franc(10);
+		Bank bank = new Bank();
+		bank.addRate("CHF", "USD", 2);
+		Money result = bank.reduce(
+				fiveBucks.plus(tenFrancs), "USD");
+		assertEquals(Money.dollar(10), result);
+	}
+
+	@Test
+	public void testSumPlusMoney() {
+		// 스텁 구현한 sum.plus() 구현하고 테스트
+		Expression fiveBucks = Money.dollar(5);
+		Expression tenFrancs = Money.franc(10);
+		Bank bank = new Bank();
+		bank.addRate("CHF", "USD", 2);
+		Expression sum = new Sum(fiveBucks, tenFrancs).plus(fiveBucks);
+		Money result = bank.reduce(sum, "USD");
+		assertEquals(Money.dollar(15), result);
+	}
+
+	@Test
+	public void testSumTimes() {
+		Expression fiveBucks = Money.dollar(5);
+		Expression tenFrancs = Money.franc(10);
+		Bank bank = new Bank();
+		bank.addRate("CHF", "USD", 2);
+		Expression sum = new Sum(fiveBucks, tenFrancs).times(2);
+		Money result = bank.reduce(sum, "USD");
+		assertEquals(Money.dollar(20), result);
+	}
+
+	@Test
+	public void testPlusSameCurrencyReturnsMoney() {
+		Expression sum = Money.dollar(1).plus(Money.dollar(1));
+		// false
+		assertTrue(sum instanceof Money);
 	}
 }

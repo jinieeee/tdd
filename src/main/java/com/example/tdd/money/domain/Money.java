@@ -2,7 +2,7 @@ package com.example.tdd.money.domain;
 
 import java.util.Objects;
 
-public class Money implements Expression{
+public class Money extends Expression{
     // 상속받은 클래스에서 변수를 사용할 수 있도록 접근성을 protected로
     protected int amount;
 
@@ -27,7 +27,7 @@ public class Money implements Expression{
         return new Money(amount, "CHF");
     }
 
-    public Money times(int multiplier) {
+    public Expression times(int multiplier) {
         return new Money(amount * multiplier , currency);
     }
 
@@ -39,11 +39,12 @@ public class Money implements Expression{
         return amount + " " + currency;
     }
 
-    public Expression plus(Money addend) {
-        return new Sum(this, addend);
+    public Money reduce(Bank bank, String to) {
+        // Money가 환율을 알게 되는 나쁜 코드 -> 환율 계산은 Bank로 이동
+        // int rate = (currency.equals("CHF") && to.equals("USD")) ? 2 : 1;
+
+        int rate = bank.rate(currency, to);
+        return new Money(amount / rate, to);
     }
 
-    public Money reduce(String to) {
-        return this;
-    }
 }
