@@ -23,7 +23,7 @@ public class SpringSecurityConfig {
                 .defaultSuccessUrl("/board/boardList")
                 .failureUrl("/error")
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                    .userService(customOAuth2UserService);
         return http.build();
     }
 }
