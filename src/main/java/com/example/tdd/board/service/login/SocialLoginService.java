@@ -2,8 +2,8 @@ package com.example.tdd.board.service.login;
 
 import com.example.tdd.board.domain.users.OAuthAttributes;
 import com.example.tdd.board.domain.users.Users;
-import com.example.tdd.board.dto.jwt.JwtUserDetails;
 import com.example.tdd.board.dto.users.SessionUserV2;
+import com.example.tdd.board.provider.JwtTokenProvider;
 import com.example.tdd.board.repository.users.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,20 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @RequiredArgsConstructor
@@ -44,22 +37,27 @@ public class SocialLoginService {
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String tokenUri;
 
+    @Value("${security.jwt.token.expire-length}")
+    private Long expireLength;
+
+    @Value("${security.jwt.token.secret-key}")
+    private String secretKey;
+
     public SessionUserV2 kakaoLogin(String code) throws Exception {
         // 1. 인가코드로 Access Token 요청
         String accessToken = getAccessToken(code, "http://localhost:3000/user/kakao/callback");
 
         // 2. 회원 register or update
-        Users users = userRegisterOrUpdate(accessToken);
-        User resUser = new User(users.getUserEmail(), users.getUserName(), null);
+        Users user = userRegisterOrUpdate(accessToken);
 
         // 3. 로그인 JWT 토큰 발행
-        String token = jwtTokenCreate(resUser);
+        String token = jwtTokenCreate(user);
 
         return SessionUserV2.builder()
-                .id(users.getUserId())
+                .id(user.getUserId())
                 .token(token)
-                .email(users.getUserEmail())
-                .name(users.getUserName())
+                .email(user.getUserEmail())
+                .name(user.getUserName())
                 .build();
     }
 
@@ -140,9 +138,11 @@ public class SocialLoginService {
     }
 
     // JWT 토큰 생성
-    private String jwtTokenCreate(User user) {
+    private String jwtTokenCreate(Users user) {
         String TOKEN_TYPE = "BEARER";
 
-        return "abcdefghijklmn";
+        String token = new JwtTokenProvider(secretKey, expireLength).createToken(user.getUserName());
+
+        return TOKEN_TYPE + " " + token;
     }
 }
