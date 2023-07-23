@@ -1,0 +1,148 @@
+package com.example.tdd.board.service.login;
+
+import com.example.tdd.board.domain.users.OAuthAttributes;
+import com.example.tdd.board.domain.users.Users;
+import com.example.tdd.board.dto.jwt.JwtUserDetails;
+import com.example.tdd.board.dto.users.SessionUserV2;
+import com.example.tdd.board.repository.users.UserRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpSession;
+import java.util.Collection;
+import java.util.Map;
+import java.util.UUID;
+
+
+@RequiredArgsConstructor
+@Service
+public class SocialLoginService {
+
+    @Autowired
+    private final UserRepository userRepository;
+
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String clientId;
+    @Value("${spring.security.oauth2.client.registration.kakao.authorization-grant-type}")
+    private String grantType;
+
+    @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
+    private String tokenUri;
+
+    public SessionUserV2 kakaoLogin(String code) throws Exception {
+        // 1. 인가코드로 Access Token 요청
+        String accessToken = getAccessToken(code, "http://localhost:3000/user/kakao/callback");
+
+        // 2. 회원 register or update
+        Users users = userRegisterOrUpdate(accessToken);
+        User resUser = new User(users.getUserEmail(), users.getUserName(), null);
+
+        // 3. 로그인 JWT 토큰 발행
+        String token = jwtTokenCreate(resUser);
+
+        return SessionUserV2.builder()
+                .id(users.getUserId())
+                .token(token)
+                .email(users.getUserEmail())
+                .name(users.getUserName())
+                .build();
+    }
+
+    private String getAccessToken(String code, String redirectUri) throws Exception {
+        // kakao developers 문서대로 작성
+
+        // HTTP Header
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // HTTP Body 생성
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", grantType);
+        body.add("client_id", clientId);
+        body.add("redirect_uri", redirectUri);
+        body.add("code", code);
+
+        // HTTP 요청 보내기
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.postForEntity(
+                tokenUri,
+                kakaoTokenRequest,
+                String.class
+        );
+
+        // body token
+        //<200,{"access_token":"생략","token_type":"bearer","refresh_token":"생략","expires_in":21599,"scope":"account_email profile_nickname","refresh_token_expires_in":5183999}
+        String responseBody = response.getBody();
+        // JsonParser deprecated -> ObjectMapper 사용
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
+        return jsonNode.get("access_token").asText();
+    }
+
+    private Users userRegisterOrUpdate(String accessToken) throws Exception {
+        Map<String, Object> response = (Map<String, Object>) getKakaoUserInfo(accessToken);
+        OAuthAttributes attributes = OAuthAttributes.ofKakao("nickname", response);
+
+        Users users = saveOrUpdate(attributes);
+
+        return users;
+    }
+
+    private Users saveOrUpdate(OAuthAttributes attributes) {
+        Users users = userRepository.findByUserEmail(attributes.getEmail())
+                .map(entity -> entity.update(attributes.getName()))
+                .orElse(attributes.toEntity());
+
+        return userRepository.save(users);
+    }
+
+    /**
+     *
+     * @param accessToken
+     * @return
+     */
+    private Map<String, Object> getKakaoUserInfo(String accessToken) throws Exception {
+        // HTTP Header 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        // HTTP 요청 보내기
+        HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+        RestTemplate rt = new RestTemplate();
+        ResponseEntity<String> response = rt.postForEntity(
+                "https://kapi.kakao.com/v2/user/me",
+                kakaoUserInfoRequest,
+                String.class
+        );
+
+        // "properties":{"nickname":"test"},"kakao_account":{"profile_nickname_needs_agreement":false,"profile":{"nickname":"test"},"has_email":true,"email_needs_agreement":false,"is_email_valid":true,"is_email_verified":true,"email":"test@test.com"}}
+        String responseBody = response.getBody();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return objectMapper.readValue(responseBody, Map.class);
+    }
+
+    // JWT 토큰 생성
+    private String jwtTokenCreate(User user) {
+        String TOKEN_TYPE = "BEARER";
+
+        return "abcdefghijklmn";
+    }
+}

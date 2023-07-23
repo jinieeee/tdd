@@ -31,7 +31,7 @@ public class OAuthAttributes {
         return ofKakao(userNameAttributeName, attributes);
     }
 
-    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+    public static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         /**
          * kakao는 kakao_account key에 value가 있음
          */

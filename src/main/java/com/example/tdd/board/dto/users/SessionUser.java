@@ -1,6 +1,7 @@
 package com.example.tdd.board.dto.users;
 
 import com.example.tdd.board.domain.users.Users;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
