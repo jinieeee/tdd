@@ -1,11 +1,8 @@
-package com.example.tdd.board.provider;
+package com.example.tdd.board.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
