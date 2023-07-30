@@ -3,10 +3,7 @@ package com.example.tdd.board.domain.board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -28,4 +25,12 @@ public class Board {
 
     private LocalDateTime sysModDtime;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "groupId")
+    private BoardGroup boardGroup;
+
+    public void changeBoardGroup(BoardGroup boardGroup) {
+        this.boardGroup = boardGroup;
+        boardGroup.getBoardList().add(this);
+    }
 }

@@ -22,6 +22,9 @@ public class BoardGroup {
     @OneToMany(mappedBy = "boardGroup")
     private List<GroupJoin> groupJoinList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "boardGroup")
+    private List<Board> boardList = new ArrayList<>();
+
     @Builder
     public BoardGroup(String groupName) {
         this.groupName = groupName;
