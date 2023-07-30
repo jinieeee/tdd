@@ -36,11 +36,8 @@ public class SocialLoginService {
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String tokenUri;
 
-    @Value("${security.jwt.token.expire-length}")
-    private Long expireLength;
-
-    @Value("${security.jwt.token.secret-key}")
-    private String secretKey;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     public SessionUserV2 kakaoLogin(String code) throws Exception {
         // 1. 인가코드로 Access Token 요청
@@ -140,7 +137,7 @@ public class SocialLoginService {
     private String jwtTokenCreate(Users user) {
         String TOKEN_TYPE = "BEARER";
 
-        String token = new JwtTokenProvider(secretKey, expireLength).createToken(user.getUserName());
+        String token = jwtTokenProvider.createToken(user.getUserName());
 
         return TOKEN_TYPE + " " + token;
     }

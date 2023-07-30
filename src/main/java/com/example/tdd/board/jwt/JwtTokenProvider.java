@@ -1,23 +1,30 @@
 package com.example.tdd.board.jwt;
 
+import com.example.tdd.board.exception.TokenInvalidExpiredException;
+import com.example.tdd.board.exception.TokenInvalidFormException;
+import com.example.tdd.board.exception.TokenInvalidSecretKeyException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+@Component
 public class JwtTokenProvider {
     private final SecretKey key;
     private final long validityInMilliseconds;
 
-    public JwtTokenProvider(String secretKey, long validityInMilliseconds) {
+    public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
+                            @Value("${security.jwt.token.expire-length}") long validityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    public String createToken(final String payload) {	// 1
+    public String createToken(final String payload) {
         final Date now = new Date();
         final Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -29,42 +36,37 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getPayload(final String token) {	// 2
+    public String getPayload(final String token) throws TokenInvalidFormException, TokenInvalidSecretKeyException, TokenInvalidExpiredException {
         return tokenToJws(token).getBody().getSubject();
     }
 
-    public void validateAbleToken(final String token) {
-        try {
-            final Jws<Claims> claims = tokenToJws(token);
-
-            validateExpiredToken(claims);	// 3
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Jws<Claims> tokenToJws(final String token) {
+    private Jws<Claims> tokenToJws(final String token) throws TokenInvalidFormException, TokenInvalidSecretKeyException, TokenInvalidExpiredException {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-        } catch (ExpiredJwtException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedJwtException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedJwtException e) {
-            throw new RuntimeException(e);
-        } catch (SignatureException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
+        } catch (final IllegalArgumentException | MalformedJwtException e) {
+            throw new TokenInvalidFormException();
+        } catch (final SignatureException e) {
+            throw new TokenInvalidSecretKeyException(token);
+        } catch(final ExpiredJwtException e) {
+            throw new TokenInvalidExpiredException();
         }
     }
 
-    private void validateExpiredToken(final Jws<Claims> claims) {
+    public void validateAbleToken(final String token) throws TokenInvalidFormException, TokenInvalidSecretKeyException, TokenInvalidExpiredException {
+        try {
+            final Jws<Claims> claims = tokenToJws(token);
+            validateExpiredToken(claims);
+        } catch (final JwtException e) {
+            throw new TokenInvalidSecretKeyException(token);
+        }
+    }
+
+    private void validateExpiredToken(final Jws<Claims> claims) throws TokenInvalidExpiredException {
         if (claims.getBody().getExpiration().before(new Date())) {
-            throw new RuntimeException();
+            throw new TokenInvalidExpiredException();
         }
     }
 }
