@@ -8,7 +8,6 @@ import com.example.tdd.board.repository.users.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,15 +17,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.Map;
 
-
-@RequiredArgsConstructor
 @Service
 public class SocialLoginService {
 
-    @Autowired
-    private final UserRepository userRepository;
+
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String clientId;
@@ -36,8 +32,13 @@ public class SocialLoginService {
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String tokenUri;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public SocialLoginService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     public SessionUserV2 kakaoLogin(String code) throws Exception {
         // 1. 인가코드로 Access Token 요청

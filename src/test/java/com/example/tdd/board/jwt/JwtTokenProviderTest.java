@@ -16,8 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class JwtTokenProviderTest {
 
@@ -46,7 +44,7 @@ class JwtTokenProviderTest {
     }
 
     @Test
-    @DisplayName("유효하지 않은 토큰 형식의 토큰으로 payload 조회하는 경우 예외 발생")
+    @DisplayName("유효하지 않은 형식의 토큰으로 payload 조회하는 경우 예외 발생")
     void getPayloadByInvalidToken() {
         Assertions.assertThatExceptionOfType(TokenInvalidFormException.class).isThrownBy(() -> jwtTokenProvider.getPayload(null));
     }

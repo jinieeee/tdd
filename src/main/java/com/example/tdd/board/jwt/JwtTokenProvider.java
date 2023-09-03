@@ -6,6 +6,7 @@ import com.example.tdd.board.exception.TokenInvalidSecretKeyException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class JwtTokenProvider {
     private final SecretKey key;
     private final long validityInMilliseconds;
 
+    // 생성자 주입 방식
     public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
                             @Value("${security.jwt.token.expire-length}") long validityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
