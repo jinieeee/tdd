@@ -1,7 +1,6 @@
 package com.example.tdd.board.repository.users;
 
-import com.example.tdd.board.domain.users.Users;
-import org.springframework.security.core.userdetails.User;
+import com.example.tdd.board.web.domain.users.Users;
 
 import java.util.Optional;
 

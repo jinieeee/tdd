@@ -1,6 +1,5 @@
 package com.example.tdd.board.dto.jwt;
 
-import com.example.tdd.board.dto.users.SessionUserV2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

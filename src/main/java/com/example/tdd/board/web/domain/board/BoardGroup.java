@@ -1,4 +1,4 @@
-package com.example.tdd.board.domain.board;
+package com.example.tdd.board.web.domain.board;
 
 import lombok.Builder;
 import lombok.Getter;

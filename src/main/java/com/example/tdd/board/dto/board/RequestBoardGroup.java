@@ -1,6 +1,6 @@
 package com.example.tdd.board.dto.board;
 
-import com.example.tdd.board.domain.board.BoardGroup;
+import com.example.tdd.board.web.domain.board.BoardGroup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

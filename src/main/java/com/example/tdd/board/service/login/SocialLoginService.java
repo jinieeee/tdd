@@ -1,13 +1,13 @@
 package com.example.tdd.board.service.login;
 
-import com.example.tdd.board.domain.users.OAuthAttributes;
-import com.example.tdd.board.domain.users.Users;
-import com.example.tdd.board.dto.users.SessionUserV2;
+import com.example.tdd.board.dto.users.Role;
+import com.example.tdd.board.web.domain.users.OAuthAttributes;
+import com.example.tdd.board.web.domain.users.Users;
+import com.example.tdd.board.dto.users.SessionUser;
 import com.example.tdd.board.jwt.JwtTokenProvider;
 import com.example.tdd.board.repository.users.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -40,7 +40,7 @@ public class SocialLoginService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public SessionUserV2 kakaoLogin(String code) throws Exception {
+    public SessionUser kakaoLogin(String code) throws Exception {
         // 1. 인가코드로 Access Token 요청
         String accessToken = getAccessToken(code, "http://localhost:3000/user/kakao/callback");
 
@@ -50,11 +50,12 @@ public class SocialLoginService {
         // 3. 로그인 JWT 토큰 발행
         String token = jwtTokenCreate(user);
 
-        return SessionUserV2.builder()
+        return SessionUser.builder()
                 .id(user.getUserId())
                 .token(token)
                 .email(user.getUserEmail())
                 .name(user.getUserName())
+                .role(Role.ROLE_USER)
                 .build();
     }
 

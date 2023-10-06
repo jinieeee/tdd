@@ -1,8 +1,8 @@
 package com.example.tdd.board.service.board;
 
-import com.example.tdd.board.domain.board.BoardGroup;
-import com.example.tdd.board.domain.board.GroupJoin;
-import com.example.tdd.board.domain.users.Users;
+import com.example.tdd.board.web.domain.board.BoardGroup;
+import com.example.tdd.board.web.domain.board.GroupJoin;
+import com.example.tdd.board.web.domain.users.Users;
 import com.example.tdd.board.repository.board.BoardGroupRepository;
 import com.example.tdd.board.repository.board.GroupJoinRepository;
 import com.example.tdd.board.repository.users.UserRepository;

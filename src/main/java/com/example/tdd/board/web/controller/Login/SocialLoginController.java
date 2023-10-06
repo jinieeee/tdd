@@ -1,6 +1,6 @@
-package com.example.tdd.board.controller;
+package com.example.tdd.board.web.controller.Login;
 
-import com.example.tdd.board.dto.users.SessionUserV2;
+import com.example.tdd.board.dto.users.SessionUser;
 import com.example.tdd.board.service.login.SocialLoginService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +20,7 @@ public class SocialLoginController {
     @GetMapping("/user/kakao/callback")
     public Long kakaoLogin(@RequestParam String code, HttpServletResponse response) throws Exception {
         // code: 카카오 서버로부터 받은 인가코드
-        SessionUserV2 sessionUser = socialLoginService.kakaoLogin(code);
+        SessionUser sessionUser = socialLoginService.kakaoLogin(code);
         response.addHeader("Authorization", "Bearer " + sessionUser.getToken());
 
         return sessionUser.getId();

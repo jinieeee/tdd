@@ -1,6 +1,6 @@
 package com.example.tdd.board.repository.users;
 
-import com.example.tdd.board.domain.users.Users;
+import com.example.tdd.board.web.domain.users.Users;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,10 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

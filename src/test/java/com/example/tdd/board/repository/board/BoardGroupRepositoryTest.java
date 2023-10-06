@@ -1,7 +1,7 @@
 package com.example.tdd.board.repository.board;
 
-import com.example.tdd.board.domain.board.BoardGroup;
-import com.example.tdd.board.domain.board.GroupJoin;
+import com.example.tdd.board.web.domain.board.BoardGroup;
+import com.example.tdd.board.web.domain.board.GroupJoin;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @SpringBootTest
 @Transactional
