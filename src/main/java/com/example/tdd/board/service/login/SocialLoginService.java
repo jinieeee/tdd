@@ -48,7 +48,7 @@ public class SocialLoginService {
         Users user = userRegisterOrUpdate(accessToken);
 
         // 3. 로그인 JWT 토큰 발행
-        String token = jwtTokenCreate(user);
+        String token = generateJwt(user);
 
         return SessionUser.builder()
                 .id(user.getUserId())
@@ -136,10 +136,10 @@ public class SocialLoginService {
     }
 
     // JWT 토큰 생성
-    private String jwtTokenCreate(Users user) {
+    private String generateJwt(Users user) {
         String TOKEN_TYPE = "BEARER";
 
-        String token = jwtTokenProvider.createToken(user.getUserName());
+        String token = jwtTokenProvider.generateToken(user.getUserName(), Role.ROLE_USER);
 
         return TOKEN_TYPE + " " + token;
     }

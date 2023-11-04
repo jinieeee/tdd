@@ -1,5 +1,8 @@
 package com.example.tdd.board.dto.jwt;
 
+import com.example.tdd.board.dto.users.Role;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -9,13 +12,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class JwtUserDetails implements UserDetails {
+    private String username;
+    private String password;
 
-    private User user;
+    private Role role;
 
-    public JwtUserDetails(User user) {
-        super();
-        this.user = user;
+    private Collection<? extends GrantedAuthority> authorities;
+
+    @Builder
+    public JwtUserDetails(String username, String password, Role role, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.authorities = authorities;
     }
 
     @Override
@@ -26,12 +37,12 @@ public class JwtUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return username;
     }
 
     @Override

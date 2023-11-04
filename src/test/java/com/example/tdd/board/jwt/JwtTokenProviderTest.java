@@ -1,5 +1,6 @@
 package com.example.tdd.board.jwt;
 
+import com.example.tdd.board.dto.users.Role;
 import com.example.tdd.board.exception.TokenInvalidExpiredException;
 import com.example.tdd.board.exception.TokenInvalidFormException;
 import com.example.tdd.board.exception.TokenInvalidSecretKeyException;
@@ -31,15 +32,15 @@ class JwtTokenProviderTest {
     @DisplayName("토큰이 올바르게 생성")
     void createToken() {
         final String payload = "abc@abc.com";
-        final String token = jwtTokenProvider.createToken(payload);
+        final String token = jwtTokenProvider.generateToken(payload, Role.ROLE_USER);
         Assertions.assertThat(token).isNotNull();
     }
 
     @Test
     @DisplayName("올바른 토큰 정보로 payload 조회")
-    void getPayloadByValidToken() throws TokenInvalidFormException, TokenInvalidSecretKeyException, TokenInvalidExpiredException {
+    void getPayloadByValidToken() throws Exception {
         final String payload = "abc@abc.com";
-        final String token = jwtTokenProvider.createToken(payload);
+        final String token = jwtTokenProvider.generateToken(payload, Role.ROLE_USER);
         Assertions.assertThat(jwtTokenProvider.getPayload(token)).isEqualTo(payload);
     }
 
@@ -64,7 +65,7 @@ class JwtTokenProviderTest {
     @Test
     @DisplayName("setcretKey가 잘못된 토큰 정보로 payload 조회하는 경우 예외 발생")
     void getPayloadByWrongSecretKeyToken() {
-        final String invalidSecretToken = invalidSecretKeyJwtTokenProvider.createToken("abc@abc.com");
+        final String invalidSecretToken = invalidSecretKeyJwtTokenProvider.generateToken("abc@abc.com", Role.ROLE_USER);
 
         Assertions.assertThatExceptionOfType(TokenInvalidSecretKeyException.class).isThrownBy(() -> jwtTokenProvider.getPayload(invalidSecretToken));
     }

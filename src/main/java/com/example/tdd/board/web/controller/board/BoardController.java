@@ -2,6 +2,8 @@ package com.example.tdd.board.web.controller.board;
 
 import com.example.tdd.board.dto.users.SessionUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +22,8 @@ public class BoardController {
 
     @GetMapping("/boardList")
     public String boardList(Model model) {
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        return user.toString();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 
     @PostMapping("/createBoard")

@@ -1,6 +1,5 @@
-package com.example.tdd.board.config;
+package com.example.tdd.board.web.controller.Login.config;
 
-import com.example.tdd.board.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -14,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -24,8 +24,10 @@ public class SpringSecurityConfig {
             .and()
                 .authorizeHttpRequests()
                 .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/user/*").permitAll() // social login 경로는 모두 허용
-                .anyRequest().hasRole("USER");  // 그 외 요청은 로그인한 사용자만 접근 가능
+                .antMatchers("/user/**").permitAll() // social login 경로는 모두 허용
+                .anyRequest().hasRole("USER")  // 그 외 요청은 로그인한 사용자만 접근 가능
+            .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
