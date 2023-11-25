@@ -17,9 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -70,7 +68,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public Boolean validateAbleToken(final String token) throws Exception {
+    public Boolean validateToken(final String token) throws Exception {
         try {
             final Jws<Claims> claims = tokenToJws(token);
             validateExpiredToken(claims);
@@ -101,8 +99,16 @@ public class JwtTokenProvider {
 
     private Collection<? extends SimpleGrantedAuthority> getAuthorities(Claims claims) {
         String authorities = (String) claims.get("authorities");
-        return Arrays.stream(authorities.split(","))
+        /*return Arrays.stream(authorities.split(","))
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        // authorities 값이 null이면 빈 리스트로 설정
+        List<SimpleGrantedAuthority> grantedAuthorities = Optional.ofNullable(authorities)
+                .map(authoritiesStr -> Arrays.stream(authoritiesStr.split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
+
+        return grantedAuthorities;
     }
 }

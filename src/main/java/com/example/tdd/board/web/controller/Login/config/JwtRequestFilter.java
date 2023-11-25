@@ -4,10 +4,12 @@ import com.example.tdd.board.jwt.JwtTokenProvider;
 import com.example.tdd.board.repository.users.UserRepository;
 import com.example.tdd.board.web.domain.users.Users;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,7 +26,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     // 인증 제외할 URL
     private static final List<String> EXCLUDE_URL =
-            List.of("/user/**");
+            List.of("/user/kakao/callback");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // TODO 다시 DB를 조회할 필요가 있는가?
                 // Users users = userRepository.findByUserEmail(payload).orElseThrow();
 
-                if(jwtTokenProvider.validateAbleToken(jwtToken)) {
+                if(jwtTokenProvider.validateToken(jwtToken)) {
                     Authentication auth = jwtTokenProvider.getAuthentication(jwtToken);
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
@@ -57,6 +59,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        if(StringUtils.equals(request.getMethod(), HttpMethod.OPTIONS)) {
+            return true;
+        }
         return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
     }
 }

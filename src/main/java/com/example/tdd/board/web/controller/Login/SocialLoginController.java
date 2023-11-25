@@ -18,11 +18,11 @@ public class SocialLoginController {
     }
 
     @GetMapping("/user/kakao/callback")
-    public Long kakaoLogin(@RequestParam String code, HttpServletResponse response) throws Exception {
+    public SessionUser kakaoLogin(@RequestParam String code, HttpServletResponse response) throws Exception {
         // code: 카카오 서버로부터 받은 인가코드
         SessionUser sessionUser = socialLoginService.kakaoLogin(code);
-        response.addHeader("Authorization", "Bearer " + sessionUser.getToken());
+        response.addHeader("Authorization", sessionUser.getToken());
 
-        return sessionUser.getId();
+        return sessionUser;
     }
 }
