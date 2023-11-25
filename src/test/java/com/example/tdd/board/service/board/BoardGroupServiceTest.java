@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @SpringBootTest
 class BoardGroupServiceTest {
@@ -41,4 +42,11 @@ class BoardGroupServiceTest {
         Assertions.assertThat(boardGroupA.getGroupJoinList()).isEqualTo(findBoardGroup.getGroupJoinList());
     }
 
+    @Test
+    @DisplayName("게시판 그룹 전체가 올바르게 조회")
+    public void allBoardGroup() {
+        // when
+        List<BoardGroup> all = boardGroupService.allBoardGroup();
+        Assertions.assertThat(all.size()).isEqualTo(10);
+    }
 }

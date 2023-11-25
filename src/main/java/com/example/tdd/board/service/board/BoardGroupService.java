@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +35,10 @@ public class BoardGroupService {
         GroupJoin saveGroupJoin = groupJoinRepository.save(groupJoin);
 
         return saveBoardGroup;
+    }
+
+    @Transactional
+    public List<BoardGroup> allBoardGroup() {
+        return boardGroupRepository.findAll();
     }
 }

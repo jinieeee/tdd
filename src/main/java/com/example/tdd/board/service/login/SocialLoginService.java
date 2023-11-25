@@ -137,7 +137,7 @@ public class SocialLoginService {
 
     // JWT 토큰 생성
     private String generateJwt(Users user) {
-        String TOKEN_TYPE = "BEARER";
+        String TOKEN_TYPE = "Bearer";
 
         String token = jwtTokenProvider.generateToken(user.getUserName(), Role.ROLE_USER);
 
