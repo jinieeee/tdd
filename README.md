@@ -19,3 +19,13 @@
 
 ## [ERD]
 <img src="img/board-erd.png"/>
+
+## [가이드]
+### Commit Message
+- 양식
+  - [카테고리] 개발 내용
+- `카테고리` 옵션
+  - feat : 새로운 기능 추가
+  - fix : 버그 수
+  - docs : 문서 작성 및 수정
+  - test : 테스트 코드 작성
