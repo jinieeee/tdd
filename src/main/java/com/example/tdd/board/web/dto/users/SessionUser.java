@@ -1,4 +1,4 @@
-package com.example.tdd.board.dto.users;
+package com.example.tdd.board.web.dto.users;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.example.tdd.board.web.controller.Login.config;
+package com.example.tdd.board.web.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

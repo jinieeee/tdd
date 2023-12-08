@@ -1,4 +1,4 @@
-package com.example.tdd.board.dto.jwt;
+package com.example.tdd.board.web.dto.jwt;
 
 import lombok.Builder;
 import lombok.Getter;

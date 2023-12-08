@@ -1,4 +1,4 @@
-package com.example.tdd.board.web.controller.Login.config;
+package com.example.tdd.board.web.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

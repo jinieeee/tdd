@@ -19,6 +19,8 @@ public class BoardGroup {
 
     private String groupName;
 
+    private Long userId;
+
     @OneToMany(mappedBy = "boardGroup")
     private List<GroupJoin> groupJoinList = new ArrayList<>();
 
@@ -26,7 +28,8 @@ public class BoardGroup {
     private List<Board> boardList = new ArrayList<>();
 
     @Builder
-    public BoardGroup(String groupName) {
+    public BoardGroup(String groupName, Long userId) {
         this.groupName = groupName;
+        this.userId = userId;
     }
 }

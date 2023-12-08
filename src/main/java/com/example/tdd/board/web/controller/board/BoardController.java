@@ -1,6 +1,5 @@
 package com.example.tdd.board.web.controller.board;
 
-import com.example.tdd.board.dto.users.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

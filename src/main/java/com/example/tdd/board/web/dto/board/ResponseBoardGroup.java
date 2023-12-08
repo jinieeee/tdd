@@ -1,4 +1,4 @@
-package com.example.tdd.board.dto.board;
+package com.example.tdd.board.web.dto.board;
 
 import com.example.tdd.board.web.domain.board.BoardGroup;
 import lombok.Builder;

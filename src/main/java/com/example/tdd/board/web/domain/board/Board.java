@@ -1,5 +1,6 @@
 package com.example.tdd.board.web.domain.board;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +29,16 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groupId")
     private BoardGroup boardGroup;
+
+    @Builder
+    public Board(Long boardId, String title, String contents, String username, LocalDateTime sysRegDtime, LocalDateTime sysModDtime) {
+        this.boardId = boardId;
+        this.title = title;
+        this.contents = contents;
+        this.username = username;
+        this.sysRegDtime = sysRegDtime;
+        this.sysModDtime = sysModDtime;
+    }
 
     public void changeBoardGroup(BoardGroup boardGroup) {
         this.boardGroup = boardGroup;

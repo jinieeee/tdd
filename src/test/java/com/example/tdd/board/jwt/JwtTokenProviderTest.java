@@ -1,6 +1,6 @@
 package com.example.tdd.board.jwt;
 
-import com.example.tdd.board.dto.users.Role;
+import com.example.tdd.board.web.dto.users.Role;
 import com.example.tdd.board.exception.TokenInvalidExpiredException;
 import com.example.tdd.board.exception.TokenInvalidFormException;
 import com.example.tdd.board.exception.TokenInvalidSecretKeyException;

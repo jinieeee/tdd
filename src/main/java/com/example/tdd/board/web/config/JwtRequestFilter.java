@@ -1,8 +1,6 @@
-package com.example.tdd.board.web.controller.Login.config;
+package com.example.tdd.board.web.config;
 
 import com.example.tdd.board.jwt.JwtTokenProvider;
-import com.example.tdd.board.repository.users.UserRepository;
-import com.example.tdd.board.web.domain.users.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
@@ -42,9 +40,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             // token 검증이 되고 인증 정보가 존재하지 않는 경우 spring security 인증 정보 저장
             if(payload != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // TODO 다시 DB를 조회할 필요가 있는가?
-                // Users users = userRepository.findByUserEmail(payload).orElseThrow();
-
                 if(jwtTokenProvider.validateToken(jwtToken)) {
                     Authentication auth = jwtTokenProvider.getAuthentication(jwtToken);
                     SecurityContextHolder.getContext().setAuthentication(auth);

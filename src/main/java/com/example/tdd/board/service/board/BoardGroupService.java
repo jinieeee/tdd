@@ -1,9 +1,10 @@
 package com.example.tdd.board.service.board;
 
+import com.example.tdd.board.repository.board.BoardGroupRepository;
 import com.example.tdd.board.web.domain.board.BoardGroup;
 import com.example.tdd.board.web.domain.board.GroupJoin;
 import com.example.tdd.board.web.domain.users.Users;
-import com.example.tdd.board.repository.board.BoardGroupRepository;
+
 import com.example.tdd.board.repository.board.GroupJoinRepository;
 import com.example.tdd.board.repository.users.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,10 @@ public class BoardGroupService {
     @Transactional
     public List<BoardGroup> allBoardGroup() {
         return boardGroupRepository.findAll();
+    }
+
+    @Transactional
+    public List<BoardGroup> findByUserId(Long userId) {
+        return boardGroupRepository.findByUserId(userId).orElseThrow();
     }
 }

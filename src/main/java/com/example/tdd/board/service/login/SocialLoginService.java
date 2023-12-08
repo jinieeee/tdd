@@ -1,9 +1,9 @@
 package com.example.tdd.board.service.login;
 
-import com.example.tdd.board.dto.users.Role;
+import com.example.tdd.board.web.dto.users.Role;
 import com.example.tdd.board.web.domain.users.OAuthAttributes;
 import com.example.tdd.board.web.domain.users.Users;
-import com.example.tdd.board.dto.users.SessionUser;
+import com.example.tdd.board.web.dto.users.SessionUser;
 import com.example.tdd.board.jwt.JwtTokenProvider;
 import com.example.tdd.board.repository.users.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;

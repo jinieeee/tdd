@@ -1,7 +1,9 @@
 package com.example.tdd.board.service.board;
 
+import com.example.tdd.board.web.domain.board.Board;
 import com.example.tdd.board.web.domain.board.BoardGroup;
 import com.example.tdd.board.repository.board.BoardGroupRepository;
+import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,8 @@ class BoardGroupServiceTest {
     public void createBoardGroupTest() {
         // given
         BoardGroup boardGroupA = BoardGroup.builder()
-                .groupName("니콩내콩")
+                .groupName("TEST2")
+                .userId(2L)
                 .build();
 
         String email = "aaa@naver.com";
@@ -48,5 +51,20 @@ class BoardGroupServiceTest {
         // when
         List<BoardGroup> all = boardGroupService.allBoardGroup();
         Assertions.assertThat(all.size()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("userId 일치하는 게시판 그룹 전체가 올바르게 조회")
+    void findByUserId() {
+        // given
+        Long userId = 1l;
+
+        // when
+        List<BoardGroup> boardGroupList = boardGroupService.findByUserId(userId);
+
+        // then
+        for(BoardGroup group : boardGroupList) {
+            Assertions.assertThat(group.getUserId()).isEqualTo(userId);
+        }
     }
 }

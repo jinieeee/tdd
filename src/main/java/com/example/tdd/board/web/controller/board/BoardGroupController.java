@@ -1,9 +1,9 @@
 package com.example.tdd.board.web.controller.board;
 
-import com.example.tdd.board.dto.board.ResponseBoardGroup;
-import com.example.tdd.board.dto.users.SessionUser;
+import com.example.tdd.board.web.dto.board.ResponseBoardGroup;
+import com.example.tdd.board.web.dto.users.SessionUser;
 import com.example.tdd.board.web.domain.board.BoardGroup;
-import com.example.tdd.board.dto.board.RequestBoardGroup;
+import com.example.tdd.board.web.dto.board.RequestBoardGroup;
 import com.example.tdd.board.service.board.BoardGroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

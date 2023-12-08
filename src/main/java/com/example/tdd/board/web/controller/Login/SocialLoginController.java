@@ -1,6 +1,6 @@
 package com.example.tdd.board.web.controller.Login;
 
-import com.example.tdd.board.dto.users.SessionUser;
+import com.example.tdd.board.web.dto.users.SessionUser;
 import com.example.tdd.board.service.login.SocialLoginService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
