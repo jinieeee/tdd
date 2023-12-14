@@ -7,9 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class JwtUserDetails implements UserDetails {
@@ -17,20 +15,18 @@ public class JwtUserDetails implements UserDetails {
     private String password;
 
     private Role role;
-
-    private Collection<? extends GrantedAuthority> authorities;
-
+    private final Collection<? extends GrantedAuthority> authorities = Collections
+            .unmodifiableCollection(Arrays.asList(new SimpleGrantedAuthority(Role.ROLE_USER.getValue())));
     @Builder
-    public JwtUserDetails(String username, String password, Role role, Collection<? extends GrantedAuthority> authorities) {
+    public JwtUserDetails(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.authorities = authorities;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
         return authorities;
     }
 

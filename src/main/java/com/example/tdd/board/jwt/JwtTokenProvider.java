@@ -11,6 +11,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -91,24 +93,8 @@ public class JwtTokenProvider {
                 .username(claims.getSubject())
                 .password("")
                 .role(Role.ROLE_USER)
-                .authorities(getAuthorities(claims))
                 .build();
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    private Collection<? extends SimpleGrantedAuthority> getAuthorities(Claims claims) {
-        String authorities = (String) claims.get("authorities");
-        /*return Arrays.stream(authorities.split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());*/
-        // authorities 값이 null이면 빈 리스트로 설정
-        List<SimpleGrantedAuthority> grantedAuthorities = Optional.ofNullable(authorities)
-                .map(authoritiesStr -> Arrays.stream(authoritiesStr.split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
-
-        return grantedAuthorities;
     }
 }
