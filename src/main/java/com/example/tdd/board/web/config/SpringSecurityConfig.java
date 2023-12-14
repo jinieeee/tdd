@@ -25,7 +25,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/user/**").permitAll() // social login 경로는 모두 허용
-                //.anyRequest().hasRole("USER")  // 그 외 요청은 로그인한 사용자만 접근 가능
+                .anyRequest().hasRole("USER")  // 그 외 요청은 로그인한 사용자만 접근 가능
             .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
