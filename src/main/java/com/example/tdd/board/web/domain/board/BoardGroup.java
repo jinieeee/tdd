@@ -1,5 +1,6 @@
 package com.example.tdd.board.web.domain.board;
 
+import com.example.tdd.board.web.domain.CommonEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-public class BoardGroup {
+public class BoardGroup extends CommonEntity {
 
     @Id
     @GeneratedValue
@@ -21,6 +22,8 @@ public class BoardGroup {
 
     private Long userId;
 
+    private String thumbImgUrl;
+
     @OneToMany(mappedBy = "boardGroup")
     private List<GroupJoin> groupJoinList = new ArrayList<>();
 
@@ -28,8 +31,9 @@ public class BoardGroup {
     private List<Board> boardList = new ArrayList<>();
 
     @Builder
-    public BoardGroup(String groupName, Long userId) {
+    public BoardGroup(String groupName, Long userId, String thumbImgUrl) {
         this.groupName = groupName;
         this.userId = userId;
+        this.thumbImgUrl = thumbImgUrl;
     }
 }

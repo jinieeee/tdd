@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -25,10 +26,12 @@ class BoardGroupServiceTest {
     @Test
     @DisplayName("게시판 그룹이 올바르게 생성")
     @Transactional // Transactional 어노테이션 없으면 영속성 컨텍스트 종료되어 동일비교 불가
+    // @Rollback(false)
     public void createBoardGroupTest() {
         // given
         BoardGroup boardGroupA = BoardGroup.builder()
                 .groupName("TEST2")
+                .thumbImgUrl("https://cdn.pixabay.com/photo/2023/02/03/05/00/colorful-7764148_1280.jpg")
                 .userId(2L)
                 .build();
 
