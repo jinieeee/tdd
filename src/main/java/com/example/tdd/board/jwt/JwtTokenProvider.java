@@ -11,16 +11,12 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -49,11 +45,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getPayload(final String token) throws Exception {
+    public String getPayload(final String token) {
         return tokenToJws(token).getBody().getSubject();
     }
 
-    private Jws<Claims> tokenToJws(final String token) throws Exception {
+    private Jws<Claims> tokenToJws(final String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -70,7 +66,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public Boolean validateToken(final String token) throws Exception {
+    public Boolean validateToken(final String token) {
         try {
             final Jws<Claims> claims = tokenToJws(token);
             validateExpiredToken(claims);
@@ -86,7 +82,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public Authentication getAuthentication(String token) throws Exception {
+    public Authentication getAuthentication(String token) {
         Claims claims = this.tokenToJws(token).getBody();
 
         UserDetails userDetails = JwtUserDetails.builder()

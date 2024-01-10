@@ -1,6 +1,6 @@
 package com.example.tdd.board.exception;
 
-public class TokenInvalidExpiredException extends Exception{
+public class TokenInvalidExpiredException extends RuntimeException {
     public TokenInvalidExpiredException() {
     }
 

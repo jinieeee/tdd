@@ -1,6 +1,6 @@
 package com.example.tdd.board.exception;
 
-public class TokenInvalidSecretKeyException extends Exception {
+public class TokenInvalidSecretKeyException extends RuntimeException {
     public TokenInvalidSecretKeyException() {
     }
 

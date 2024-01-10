@@ -1,6 +1,6 @@
 package com.example.tdd.board.exception;
 
-public class TokenInvalidFormException extends Exception {
+public class TokenInvalidFormException extends RuntimeException {
     public TokenInvalidFormException() {
     }
 
