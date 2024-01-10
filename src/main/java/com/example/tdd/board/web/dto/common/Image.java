@@ -13,6 +13,8 @@ public class Image {
 
     @Builder
     public Image(String originName, String changedName, String storedImageUrlPath) {
-
+        this.originName = originName;
+        this.changedName = changedName;
+        this.storedImageUrlPath = storedImageUrlPath;
     }
 }

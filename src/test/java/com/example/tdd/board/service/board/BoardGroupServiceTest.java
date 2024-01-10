@@ -1,15 +1,12 @@
 package com.example.tdd.board.service.board;
 
-import com.example.tdd.board.web.domain.board.Board;
 import com.example.tdd.board.web.domain.board.BoardGroup;
 import com.example.tdd.board.repository.board.BoardGroupRepository;
-import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 import java.util.List;

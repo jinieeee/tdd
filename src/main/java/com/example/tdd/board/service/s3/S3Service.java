@@ -22,7 +22,7 @@ public class S3Service {
 
     private final AmazonS3 amazonS3;
 
-    @Value("cloud.aws.s3.bucketName")
+    @Value("${cloud.aws.s3.bucketName}")
     private String bucketName; // 버킷명
 
     private String changedImageName(String originName) {
@@ -32,7 +32,7 @@ public class S3Service {
     }
 
     private String uploadImageToS3(MultipartFile image) {
-        String originName = image.getName();
+        String originName = image.getOriginalFilename();
         String ext = originName.substring(originName.lastIndexOf("."));
         String changedName = this.changedImageName(originName);
         ObjectMetadata metadata = new ObjectMetadata();
@@ -53,9 +53,10 @@ public class S3Service {
         String originName = image.getOriginalFilename();
         String storedImageUrlPath = this.uploadImageToS3(image);
 
-        return Image.builder()
+        Image newImage = Image.builder()
                 .originName(originName)
                 .storedImageUrlPath(storedImageUrlPath)
                 .build();
+        return newImage;
     }
 }
