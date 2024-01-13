@@ -15,10 +15,13 @@ public class ResponseBoardGroup {
 
     private String groupName;
 
+    private String thumbImgUrl;
+
     @Builder
-    public ResponseBoardGroup(Long groupId, String groupName) {
+    public ResponseBoardGroup(Long groupId, String groupName, String thumbImgUrl) {
         this.groupId = groupId;
         this.groupName = groupName;
+        this.thumbImgUrl = thumbImgUrl;
     }
 
     public static List<ResponseBoardGroup> toResponseBoardGroup(List<BoardGroup> boardGroupList) {
@@ -26,6 +29,7 @@ public class ResponseBoardGroup {
         for(BoardGroup boardGroup : boardGroupList) {
             ResponseBoardGroup responseBoardGroup = ResponseBoardGroup.builder()
                     .groupId(boardGroup.getGroupId())
+                    .thumbImgUrl(boardGroup.getThumbImgUrl())
                     .groupName(boardGroup.getGroupName())
                     .build();
             response.add(responseBoardGroup);

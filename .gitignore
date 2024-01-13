@@ -6,6 +6,7 @@ build/
 **/application-oauth.properties
 **/application-db.properties
 **/application-token.properties
+**/application-aws.properties
 
 ### STS ###
 .apt_generated

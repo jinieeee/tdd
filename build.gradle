@@ -36,13 +36,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	implementation 'org.apache.httpcomponents:httpclient'
 	implementation 'org.projectlombok:lombok'
+	testImplementation 'junit:junit:4.13.1'
 	annotationProcessor 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.findify:s3mock_2.13:0.2.6'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	//querydsl 추가
