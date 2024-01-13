@@ -1,9 +1,7 @@
 package com.example.tdd.board.jwt;
 
+import com.example.tdd.board.exception.TokenException;
 import com.example.tdd.board.web.dto.users.Role;
-import com.example.tdd.board.exception.TokenInvalidExpiredException;
-import com.example.tdd.board.exception.TokenInvalidFormException;
-import com.example.tdd.board.exception.TokenInvalidSecretKeyException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -47,7 +45,7 @@ class JwtTokenProviderTest {
     @Test
     @DisplayName("유효하지 않은 형식의 토큰으로 payload 조회하는 경우 예외 발생")
     void getPayloadByInvalidToken() {
-        Assertions.assertThatExceptionOfType(TokenInvalidFormException.class).isThrownBy(() -> jwtTokenProvider.getPayload(null));
+        Assertions.assertThatExceptionOfType(TokenException.class).isThrownBy(() -> jwtTokenProvider.getPayload(null));
     }
 
     @Test
@@ -59,7 +57,7 @@ class JwtTokenProviderTest {
                 .setExpiration(new Date((new Date()).getTime() - 1))
                 .compact();
 
-        Assertions.assertThatExceptionOfType(TokenInvalidExpiredException.class).isThrownBy(() -> jwtTokenProvider.getPayload(expiredToken));
+        Assertions.assertThatExceptionOfType(TokenException.class).isThrownBy(() -> jwtTokenProvider.getPayload(expiredToken));
     }
 
     @Test
@@ -67,6 +65,6 @@ class JwtTokenProviderTest {
     void getPayloadByWrongSecretKeyToken() {
         final String invalidSecretToken = invalidSecretKeyJwtTokenProvider.generateToken("abc@abc.com", Role.ROLE_USER);
 
-        Assertions.assertThatExceptionOfType(TokenInvalidSecretKeyException.class).isThrownBy(() -> jwtTokenProvider.getPayload(invalidSecretToken));
+        Assertions.assertThatExceptionOfType(TokenException.class).isThrownBy(() -> jwtTokenProvider.getPayload(invalidSecretToken));
     }
 }
