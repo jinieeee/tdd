@@ -8,6 +8,8 @@ import com.example.tdd.board.web.domain.users.Users;
 import com.example.tdd.board.repository.board.GroupJoinRepository;
 import com.example.tdd.board.repository.users.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,8 +25,11 @@ public class BoardGroupService {
 
     private final GroupJoinRepository groupJoinRepository;
 
+    private final SecurityContext securityContext = SecurityContextHolder.getContext();
+
     @Transactional
-    public BoardGroup createBoard(BoardGroup boardGroup, String email) {
+    public BoardGroup createGroup(BoardGroup boardGroup) {
+        String email = securityContext.getAuthentication().getName();
         Users user = userRepository.findByUserEmail(email).orElseThrow();
 
         GroupJoin groupJoin = GroupJoin.builder()
@@ -33,7 +38,7 @@ public class BoardGroupService {
         groupJoin.changeBoardGroup(boardGroup);
 
         BoardGroup saveBoardGroup = boardGroupRepository.save(boardGroup);
-        GroupJoin saveGroupJoin = groupJoinRepository.save(groupJoin);
+        groupJoinRepository.save(groupJoin);
 
         return saveBoardGroup;
     }
