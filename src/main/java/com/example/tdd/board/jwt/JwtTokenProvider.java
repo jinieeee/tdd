@@ -22,8 +22,8 @@ public class JwtTokenProvider {
     private final long validityInMilliseconds;
 
     // 생성자 주입 방식
-    public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
-                            @Value("${security.jwt.token.expire-length}") long validityInMilliseconds) {
+    public JwtTokenProvider(@Value("${jwt.access-token.secret-key}") String secretKey,
+                            @Value("${jwt.accessToken.expire-length}") long validityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.validityInMilliseconds = validityInMilliseconds;
     }

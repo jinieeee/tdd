@@ -21,7 +21,7 @@ class JwtTokenProviderTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    @Value("${security.jwt.token.secret-key}")
+    @Value("${jwt.access-token.secret-key}")
     private String secretKey;
 
     private final JwtTokenProvider invalidSecretKeyJwtTokenProvider = new JwtTokenProvider("invalidTokenSecretKeyForJwtTokenProviderTest", 8640000L);
