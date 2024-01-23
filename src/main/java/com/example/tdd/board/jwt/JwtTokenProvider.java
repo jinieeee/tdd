@@ -3,10 +3,10 @@ package com.example.tdd.board.jwt;
 import com.example.tdd.board.exception.TokenExceptionMessage;
 import com.example.tdd.board.web.dto.jwt.JwtUserDetails;
 import com.example.tdd.board.web.dto.users.Role;
+import com.example.tdd.board.web.properties.TokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,22 +18,23 @@ import java.util.*;
 
 @Component
 public class JwtTokenProvider {
-    private final SecretKey key;
-    private final long validityInMilliseconds;
 
-    // 생성자 주입 방식
-    public JwtTokenProvider(@Value("${jwt.access-token.secret-key}") String secretKey,
-                            @Value("${jwt.accessToken.expire-length}") long validityInMilliseconds) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        this.validityInMilliseconds = validityInMilliseconds;
+    private final TokenProperties tokenProperties;
+
+    private final SecretKey key;
+
+    public JwtTokenProvider(TokenProperties tokenProperties) {
+        this.tokenProperties = tokenProperties;
+        this.key = Keys.hmacShaKeyFor(tokenProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
     }
+
 
     public String generateToken(final String username, Role role) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("ROLE", role);
 
         final Date now = new Date();
-        final Date validity = new Date(now.getTime() + validityInMilliseconds);
+        final Date validity = new Date(now.getTime() + tokenProperties.getExpireLength());
 
         return Jwts.builder()
                 .setClaims(claims)
