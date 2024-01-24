@@ -19,13 +19,13 @@ import java.util.*;
 @Component
 public class JwtTokenProvider {
 
-    private final TokenProperties tokenProperties;
+    private final TokenProperties.AccessToken accessToken;
 
     private final SecretKey key;
 
     public JwtTokenProvider(TokenProperties tokenProperties) {
-        this.tokenProperties = tokenProperties;
-        this.key = Keys.hmacShaKeyFor(tokenProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
+        this.accessToken = tokenProperties.getAccessToken();
+        this.key = Keys.hmacShaKeyFor(accessToken.getSecretKey().getBytes(StandardCharsets.UTF_8));
     }
 
 
@@ -34,7 +34,7 @@ public class JwtTokenProvider {
         claims.put("ROLE", role);
 
         final Date now = new Date();
-        final Date validity = new Date(now.getTime() + tokenProperties.getExpireLength());
+        final Date validity = new Date(now.getTime() + accessToken.getExpireLength());
 
         return Jwts.builder()
                 .setClaims(claims)

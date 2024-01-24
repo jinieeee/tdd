@@ -1,19 +1,31 @@
 package com.example.tdd.board.web.properties;
 
-
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConstructorBinding;
-
-@Getter
 @Setter
-@ConstructorBinding
+@Getter
 public class TokenProperties {
 
-    private String secretKey;
+    public AccessToken accessToken;
 
-    private long expireLength;
+    public RefreshToken refreshToken;
 
     public TokenProperties() {
+        this.accessToken = new AccessToken();
+        this.refreshToken = new RefreshToken();
+    }
+
+    @Getter
+    @Setter
+    public class AccessToken {
+        public String secretKey;
+        public long expireLength;
+    }
+
+    @Getter
+    @Setter
+    public class RefreshToken {
+        public String secretKey;
+        public long expireLength;
     }
 }

@@ -29,7 +29,7 @@ class JwtTokenProviderTest {
 
     @BeforeEach
     public void before_token_invalid_test() {
-        key = tokenProperties.getSecretKey();
+        key = tokenProperties.getAccessToken().getSecretKey();
     }
 
     @Test

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class PropertiesConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "jwt.access-token")
+    @ConfigurationProperties(prefix = "jwt")
     public TokenProperties tokenProperties() {
         return new TokenProperties();
     }
