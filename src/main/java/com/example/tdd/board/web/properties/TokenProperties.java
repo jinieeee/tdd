@@ -1,31 +1,31 @@
 package com.example.tdd.board.web.properties;
 
 import lombok.Getter;
-import lombok.Setter;
-@Setter
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
+
 @Getter
-public class TokenProperties {
+@RequiredArgsConstructor
+@ConstructorBinding
+@ConfigurationProperties(prefix = "jwt")
+public final class TokenProperties {
 
-    public AccessToken accessToken;
+    private final AccessToken accessToken;
 
-    public RefreshToken refreshToken;
+    private final RefreshToken refreshToken;
 
-    public TokenProperties() {
-        this.accessToken = new AccessToken();
-        this.refreshToken = new RefreshToken();
+    @Getter
+    @RequiredArgsConstructor
+    public static final class AccessToken {
+        private final String secretKey;
+        private final long expireLength;
     }
 
     @Getter
-    @Setter
-    public class AccessToken {
-        public String secretKey;
-        public long expireLength;
-    }
-
-    @Getter
-    @Setter
-    public class RefreshToken {
-        public String secretKey;
-        public long expireLength;
+    @RequiredArgsConstructor
+    public static final class RefreshToken {
+        private final String secretKey;
+        private final long expireLength;
     }
 }

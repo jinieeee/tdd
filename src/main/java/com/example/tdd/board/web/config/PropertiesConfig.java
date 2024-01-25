@@ -1,16 +1,10 @@
 package com.example.tdd.board.web.config;
 
 import com.example.tdd.board.web.properties.TokenProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@EnableConfigurationProperties(value = {TokenProperties.class})
 public class PropertiesConfig {
-
-    @Bean
-    @ConfigurationProperties(prefix = "jwt")
-    public TokenProperties tokenProperties() {
-        return new TokenProperties();
-    }
 }
