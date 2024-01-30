@@ -1,5 +1,8 @@
 package com.example.tdd.board.web.controller.board;
 
+import com.example.tdd.board.service.board.BoardService;
+import com.example.tdd.board.web.domain.board.Board;
+import com.example.tdd.board.web.dto.board.RequestBoard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,8 +19,8 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/board")
 public class BoardController {
 
-    private final HttpSession httpSession;
 
+    private final BoardService boardService;
 
     @GetMapping("/boardList")
     public String boardList(Model model) {
@@ -26,7 +29,8 @@ public class BoardController {
     }
 
     @PostMapping("/createBoard")
-    public void createBoard() {
-
+    public Board createBoard(RequestBoard board, Long groupId) {
+        Board entity = RequestBoard.toBoardEntity(board);
+        return boardService.createBoard(entity, groupId);
     }
 }
