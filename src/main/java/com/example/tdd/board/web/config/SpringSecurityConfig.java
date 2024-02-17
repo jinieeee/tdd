@@ -24,6 +24,7 @@ public class SpringSecurityConfig {
             .and()
                 .authorizeHttpRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/swagger*/**", "/v2/api-docs", "/configuration/**", "/webjars/**", "/swagger-resources/**").permitAll()
                 .antMatchers("/user/**").permitAll() // social login 경로는 모두 허용
                 .anyRequest().hasRole("USER")  // 그 외 요청은 로그인한 사용자만 접근 가능
             .and()
