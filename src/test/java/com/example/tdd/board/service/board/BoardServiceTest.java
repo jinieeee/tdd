@@ -2,7 +2,7 @@ package com.example.tdd.board.service.board;
 
 import com.example.tdd.board.web.domain.board.Board;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
