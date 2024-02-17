@@ -20,4 +20,13 @@ public class RequestBoard extends CommonEntity {
                 .username(board.username)
                 .build();
     }
+
+    public static Board toBoardEntity(Long boardId, RequestBoard board) {
+        return Board.builder()
+                .boardId(boardId)
+                .title(board.title)
+                .contents(board.contents)
+                .username(board.username)
+                .build();
+    }
 }

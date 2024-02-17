@@ -24,4 +24,15 @@ public class BoardService {
         Board saveBoard = boardRepository.save(board);
         return saveBoard;
     }
+
+    public Board getBoard(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow();
+    }
+
+    @Transactional
+    public Board updateBoard(Board board) {
+        Board updateBoard = boardRepository.save(board);
+        return updateBoard;
+    }
+
 }

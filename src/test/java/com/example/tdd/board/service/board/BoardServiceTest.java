@@ -33,4 +33,17 @@ class BoardServiceTest {
         Assertions.assertThat(saveBoard.getBoardGroup().getGroupId()).isEqualTo(groupId);
         Assertions.assertThat(saveBoard.getTitle()).isEqualTo(board.getTitle());
     }
+
+    @Test
+    @DisplayName("게시글이 올바르게 조회")
+    public void getBoardTest() {
+        // given
+        Long boardId = 49L;
+
+        // when
+        Board findBoard = boardService.getBoard(boardId);
+
+        // then
+        Assertions.assertThat(findBoard.getBoardId()).isEqualTo(boardId);
+    }
 }

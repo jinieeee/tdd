@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,5 +29,16 @@ public class BoardController {
     public Board createBoard(RequestBoard board, Long groupId) {
         Board entity = RequestBoard.toBoardEntity(board);
         return boardService.createBoard(entity, groupId);
+    }
+
+    @PostMapping("/board/{boardId}")
+    public Board getBoard(@PathVariable("boardId") Long boardId) {
+        return boardService.getBoard(boardId);
+    }
+
+    @PatchMapping("/board/{boardId}")
+    public Board updateBoard(@PathVariable("boardId") Long boardId, RequestBoard board) {
+        Board entity = RequestBoard.toBoardEntity(boardId, board);
+        return boardService.updateBoard(entity);
     }
 }
