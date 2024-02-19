@@ -29,4 +29,19 @@ public class BoardGroupCustomRepositoryImpl implements BoardGroupCustomRepositor
 
         return Optional.ofNullable(findByUserId);
     }
+
+    @Override
+    public Optional<BoardGroup> findByGroupId(Long groupId) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+        QBoardGroup boardGroup = QBoardGroup.boardGroup;
+
+        BoardGroup findByGroupId = queryFactory
+                .select(boardGroup)
+                .from(boardGroup)
+                .where(boardGroup.groupId.eq(groupId))
+                .fetchOne();
+
+        return Optional.ofNullable(findByGroupId);
+    }
 }

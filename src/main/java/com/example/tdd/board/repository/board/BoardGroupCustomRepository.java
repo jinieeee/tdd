@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface BoardGroupCustomRepository {
 
     Optional<List<BoardGroup>> findByUserId(Long userId);
+
+    Optional<BoardGroup> findByGroupId(Long groupId);
 }
