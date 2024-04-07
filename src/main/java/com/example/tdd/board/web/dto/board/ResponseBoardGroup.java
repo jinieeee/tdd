@@ -4,6 +4,8 @@ import com.example.tdd.board.web.domain.board.BoardGroup;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,11 +19,14 @@ public class ResponseBoardGroup {
 
     private String thumbImgUrl;
 
+    private LocalDateTime sysRegDtime;
+
     @Builder
-    public ResponseBoardGroup(Long groupId, String groupName, String thumbImgUrl) {
+    public ResponseBoardGroup(Long groupId, String groupName, String thumbImgUrl, LocalDateTime sysRegDtime) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.thumbImgUrl = thumbImgUrl;
+        this.sysRegDtime = sysRegDtime;
     }
 
     public static List<ResponseBoardGroup> toResponseBoardGroup(List<BoardGroup> boardGroupList) {
@@ -31,6 +36,7 @@ public class ResponseBoardGroup {
                     .groupId(boardGroup.getGroupId())
                     .thumbImgUrl(boardGroup.getThumbImgUrl())
                     .groupName(boardGroup.getGroupName())
+                    .sysRegDtime(boardGroup.getSysRegDtime())
                     .build();
             response.add(responseBoardGroup);
         }

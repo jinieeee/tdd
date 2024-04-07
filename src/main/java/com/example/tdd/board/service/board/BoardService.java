@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,4 +36,7 @@ public class BoardService {
         return updateBoard;
     }
 
+    public List<Board> findByGroupId(Long groupId) {
+        return boardRepository.findByGroupId(groupId).orElseThrow();
+    }
 }
