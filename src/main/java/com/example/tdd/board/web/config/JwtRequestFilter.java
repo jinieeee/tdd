@@ -24,7 +24,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     // 인증 제외할 URL
     private static final List<String> EXCLUDE_URL =
-            List.of("/user/kakao/callback");
+            List.of("/swagger", "/swagger-ui", "/configuration", "/webjars", "/v2/api-docs", "/swagger-resources", "/user/kakao/callback");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -53,10 +53,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         if(StringUtils.equals(request.getMethod(), HttpMethod.OPTIONS)) {
             return true;
         }
-        return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
+        return EXCLUDE_URL.stream().anyMatch(exclude -> request.getServletPath().startsWith(exclude));
     }
 }

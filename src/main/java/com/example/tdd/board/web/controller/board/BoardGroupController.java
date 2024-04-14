@@ -1,15 +1,14 @@
 package com.example.tdd.board.web.controller.board;
 
+import com.example.tdd.board.service.board.BoardService;
+import com.example.tdd.board.web.domain.board.Board;
 import com.example.tdd.board.web.dto.board.ResponseBoardGroup;
 import com.example.tdd.board.web.domain.board.BoardGroup;
 import com.example.tdd.board.web.dto.board.RequestBoardGroup;
 import com.example.tdd.board.service.board.BoardGroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +18,7 @@ import java.util.List;
 @RequestMapping("/group")
 public class BoardGroupController {
 
+    private final BoardService boardService;
     private final BoardGroupService boardGroupService;
 
     @PostMapping("/createGroup")
@@ -34,5 +34,10 @@ public class BoardGroupController {
     public List<ResponseBoardGroup> allBoardGroup() {
         List<BoardGroup> boardGroupList = boardGroupService.allBoardGroup();
         return ResponseBoardGroup.toResponseBoardGroup(boardGroupList);
+    }
+
+    @GetMapping("/list/{groupId}")
+    public List<Board> boardsByGroupId(@PathVariable("groupId") Long groupId) {
+        return boardService.findByGroupId(groupId);
     }
 }
