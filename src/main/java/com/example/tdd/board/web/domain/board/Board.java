@@ -1,6 +1,7 @@
 package com.example.tdd.board.web.domain.board;
 
 import com.example.tdd.board.web.domain.CommonEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Board extends CommonEntity {
 
     private String username;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groupId")
     private BoardGroup boardGroup;

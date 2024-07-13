@@ -24,7 +24,7 @@ public class BoardController {
         return boardService.createBoard(entity, groupId);
     }
 
-    @PostMapping("/{boardId}")
+    @GetMapping("/{boardId}")
     public Board getBoard(@PathVariable("boardId") Long boardId) {
         return boardService.getBoard(boardId);
     }
